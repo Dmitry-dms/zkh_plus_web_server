@@ -1,6 +1,13 @@
 package repository
 
+import (
+	"github.com/dmitry-dms/rest-gin/models"
+	"github.com/jmoiron/sqlx"
+)
+
 type Authorization interface {
+	CreateUser(user models.User) (int, error)
+	GetUser(email, password string) (models.User, error)
 }
 type UserList interface {
 }
@@ -10,6 +17,8 @@ type Repository struct {
 	UserList
 }
 
-func NewRepository() *Repository {
-	return &Repository{}
+func NewRepository(db *sqlx.DB) *Repository {
+	return &Repository{
+		Authorization: NewAuthPostgres(db),
+	}
 }
