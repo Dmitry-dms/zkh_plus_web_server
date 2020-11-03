@@ -8,6 +8,7 @@ import (
 type Authorization interface {
 	CreateUser(user models.User) (int, error)                    //вернёт id или ошибку
 	GenerateToken(email string, password string) (string, error) // вернет токен
+	ParseToken(token string) (int, error)                        //вернёт id при успешном парсинге
 }
 type UserList interface {
 }
