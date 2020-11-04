@@ -11,3 +11,24 @@ RUN go build -o main ./cmd
 ## Our start command which kicks off
 ## our newly created binary executable
 CMD ["/app/main"]
+
+
+#version: '3'
+#
+#services:
+#  api:
+#    build: .
+#    ports:
+#      - 8537:8653
+#    depends_on:
+#      - postgres
+#  postgres:
+#    image: postgres:latest
+#    environment:
+#    - POSTGRES_PASSWORD=mysecret
+#    ports:
+#    - 5436:5432
+#    volumes:
+#    - "db-data:/var/lib/postgres/data"
+#volumes:
+#  db-data:
