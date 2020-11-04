@@ -3,6 +3,7 @@ package repository
 import (
 	"fmt"
 	"github.com/jmoiron/sqlx"
+	"github.com/sirupsen/logrus"
 )
 
 const (
@@ -21,13 +22,15 @@ type Config struct {
 }
 
 func NewPostgresDB(cfg Config) (*sqlx.DB, error) {
-	db, err := sqlx.Connect("postgres", fmt.Sprintf("user=%s port=%s password=%s host=%s dbname=%s  sslmode=%s",
+	query := fmt.Sprintf("user=%s port=%s password=%s host=%s dbname=%s  sslmode=%s",
 		cfg.Username,
 		cfg.Port,
 		cfg.Password,
 		cfg.Host,
 		cfg.DBName,
-		cfg.SSLMode))
+		cfg.SSLMode)
+	logrus.Debugf("%s", query)
+	db, err := sqlx.Connect("postgres", query)
 	if err != nil {
 		return nil, err
 	}
