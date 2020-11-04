@@ -1,0 +1,12 @@
+DROP TABLE users_gas;
+DROP TABLE users_hot;
+DROP TABLE users_cold;
+DROP TABLE users_electricity;
+DROP TABLE gas_list;
+DROP TABLE hot_water_list;
+DROP TABLE cold_water_list;
+DROP TABLE electricity_list;
+DROP TABLE company_address;
+DROP TABLE company;
+DROP TABLE address;
+DROP TABLE users;

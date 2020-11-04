@@ -1,0 +1,15 @@
+version: '3'
+
+services:
+  postgres:
+    image: postgres:latest
+    environment:
+    - POSTGRES_PASSWORD=mysecret
+    ports:
+    - 5436:5432
+  client:
+    build: ./
+    ports:
+    - 8537:8653
+    depends_on:
+      - postgres
