@@ -7,9 +7,10 @@ services:
     - POSTGRES_PASSWORD=mysecret
     ports:
     - 5436:5432
-  client:
+  api:
+    depends_on:
+      - postgres
+    command: sh -c './wait-for host:5436 -- cmd'
     build: ./
     ports:
     - 8537:8653
-    depends_on:
-      - postgres
