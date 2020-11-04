@@ -2,7 +2,6 @@ port: "8080"
 
 db:
   username: "postgres"
-
   host: "fullstack-postgres"
   port: "5436"
   dbname: "postgres"
