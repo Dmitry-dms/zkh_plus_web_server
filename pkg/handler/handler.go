@@ -24,6 +24,7 @@ func (h *Handler) InitRoutes() *gin.Engine {
 	test := router.Group("/")
 	{
 		test.GET("/t", h.testing)
+		test.POST("/check-token", h.checkToken)
 	}
 	api := router.Group("/api/v1", h.userIdentity)
 	{
