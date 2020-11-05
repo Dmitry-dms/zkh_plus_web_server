@@ -22,14 +22,8 @@ type Config struct {
 }
 
 func NewPostgresDB(cfg Config) (*sqlx.DB, error) {
-	query := fmt.Sprintf("user=%s port=%s password=%s host=%s dbname=%s  sslmode=%s",
-		cfg.Username,
-		cfg.Port,
-		cfg.Password,
-		cfg.Host,
-		cfg.DBName,
-		cfg.SSLMode)
-	logrus.Debugf("%s", query)
+	query := fmt.Sprintf("postgres://%v:%v@%v:%v/%v?sslmode=%v", cfg.Username, cfg.Password, cfg.Host, cfg.Port, cfg.DBName, cfg.SSLMode)
+	logrus.Printf("URL to database %s", query)
 	db, err := sqlx.Connect("postgres", query)
 	if err != nil {
 		return nil, err
