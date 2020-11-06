@@ -10,16 +10,26 @@ type Authorization interface {
 	GenerateToken(email string, password string) (string, error) // вернет токен
 	ParseToken(token string) (int, error)                        //вернёт id при успешном парсинге
 }
-type UserList interface {
+type CompanyList interface {
+	GetAllCompanies() ([]models.Company, error)
+	GetCompanyById(companyId int) (models.Company, error)
+}
+type UserRequest interface {
+	UpdateUserCompany(userId, companyId int) error
+	CreateUserAddress(userId int, address models.UserAddress) (int, error)
+	GetAllUserAddress(userId int) ([]models.UserAddress, error)
 }
 
 type Service struct {
 	Authorization
-	UserList
+	CompanyList
+	UserRequest
 }
 
 func NewService(repos *repository.Repository) *Service {
 	return &Service{
 		Authorization: NewAuthService(repos.Authorization),
+		CompanyList:   NewCompanyListService(repos.CompanyList),
+		UserRequest:   NewUserRequestService(repos.UserRequest),
 	}
 }

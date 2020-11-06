@@ -8,7 +8,6 @@ CREATE TABLE users
     email         varchar(255) not null unique,
     password_hash varchar(255) not null,
     company_id    integer default 0
-
 );
 CREATE TABLE address
 (
@@ -17,24 +16,20 @@ CREATE TABLE address
     city        varchar(255) not null,
     street      varchar(255) not null,
     home_number varchar(10)  not null,
-    flat        integer      not null
+    flat        varchar(10)  not null
 );
 CREATE TABLE company
 (
-    company_id         serial       not null unique,
-    company_name       varchar(255) not null unique,
-    director_full_name varchar(255) not null,
-    company_phone      varchar(255) not null unique,
-    company_address_id integer default 0
-);
-CREATE TABLE company_address
-(
-    company_address_id  serial       not null unique,
+    company_id          serial       not null unique,
+    company_name        varchar(255) not null unique,
+    director_full_name  varchar(255) not null,
+    company_phone       varchar(255) not null unique,
     company_city        varchar(255) not null,
     company_street      varchar(255) not null,
     company_home_number varchar(10)  not null,
-    company_flat        integer      not null
+    company_flat        varchar(10)  not null
 );
+
 CREATE TABLE electricity_list
 (
     id         serial       not null unique,

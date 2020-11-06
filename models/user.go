@@ -9,5 +9,5 @@ type User struct {
 	FullName   string
 	Email      string `json:"email" binding:"required"`
 	Password   string `json:"password" binding:"required"`
-	CompanyId  int
+	CompanyId  int    `json:"company_id" db:"company_id"`
 }
