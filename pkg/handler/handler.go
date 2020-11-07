@@ -38,6 +38,9 @@ func (h *Handler) InitRoutes() *gin.Engine {
 			users.POST("/update-company", h.updateUserCompany) // ?company_id=...
 			users.POST("/create-address", h.createUserAddress)
 			users.GET("/get-user-address", h.getAllUserAddress)
+			users.POST("/insert-values", h.addVolumes)
+			users.GET("/values/get-all", h.getAllUserValues)
+			users.GET("/values/get", h.getUsersValuesByYearAndMonth) //?year=...&month=...
 		}
 	}
 	return router

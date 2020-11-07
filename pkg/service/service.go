@@ -18,6 +18,9 @@ type UserRequest interface {
 	UpdateUserCompany(userId, companyId int) error
 	CreateUserAddress(userId int, address models.UserAddress) (int, error)
 	GetAllUserAddress(userId int) ([]models.UserAddress, error)
+	InputVolumes(userId int, volume models.DataVolume) error
+	GetUsersValuesByYearAndMonth(userId, year, month int) ([]models.DataVolume, error)
+	GetAllUserValues(userId int) ([]models.DataVolume, error)
 }
 
 type Service struct {

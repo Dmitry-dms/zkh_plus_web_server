@@ -1,19 +1,18 @@
 package main
 
 import (
-	//gorm "github.com/jinzhu/gorm"
-	//"database/sql"
+	"context"
 	srv "github.com/dmitry-dms/rest-gin"
 	"github.com/dmitry-dms/rest-gin/pkg/handler"
 	"github.com/dmitry-dms/rest-gin/pkg/repository"
 	"github.com/dmitry-dms/rest-gin/pkg/service"
 	"github.com/joho/godotenv"
-	"github.com/sirupsen/logrus"
-	"os"
-
-	//"github.com/jinzhu/gorm"
 	_ "github.com/lib/pq"
+	"github.com/sirupsen/logrus"
 	"github.com/spf13/viper"
+	"os"
+	"os/signal"
+	"syscall"
 )
 
 func main() {
@@ -42,9 +41,24 @@ func main() {
 	handlers := handler.NewHandler(services)
 
 	server := new(srv.Server)
+	go func() {
+		if err := server.Run(viper.GetString("port"), handlers.InitRoutes()); err != nil {
+			logrus.Fatalf("error while running: %s", err.Error())
+		}
+	}()
+	logrus.Print("ZKH plus server started")
 
-	if err := server.Run(viper.GetString("port"), handlers.InitRoutes()); err != nil {
-		logrus.Fatalf("error while running: %s", err.Error())
+	quit := make(chan os.Signal, 1)
+	signal.Notify(quit, syscall.SIGTERM, syscall.SIGINT) // сигналы в unix системах
+	<-quit
+
+	logrus.Print("ZKH plus server are shutting down")
+	if err := server.Shutdown(context.Background()); err != nil {
+		logrus.Errorf("error occurred while shutting down: %s", err.Error())
+	}
+	if //goland:noinspection ALL
+	err := db.Close(); err != nil {
+		logrus.Errorf("error occurred while closing db: %s", err.Error())
 	}
 }
 

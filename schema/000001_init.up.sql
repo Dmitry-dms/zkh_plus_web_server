@@ -30,62 +30,16 @@ CREATE TABLE company
     company_flat        varchar(10)  not null
 );
 
-CREATE TABLE electricity_list
+CREATE TABLE volume_data
 (
-    id         serial       not null unique,
-    volume     varchar(255) not null,
-    date_full  varchar(255) not null,
-    date_month varchar(255) not null,
-    date_year  varchar(255) not null
-);
-CREATE TABLE users_electricity
-(
-    id             serial                                                 not null unique,
-    user_id        int references users (user_id) on delete cascade       not null,
-    electricity_id int references electricity_list (id) on delete cascade not null
-);
-
-CREATE TABLE cold_water_list
-(
-    id         serial       not null unique,
-    volume     varchar(255) not null,
-    date_full  varchar(255) not null,
-    date_month varchar(255) not null,
-    date_year  varchar(255) not null
-);
-CREATE TABLE users_cold
-(
-    id            serial                                                not null unique,
-    user_id       int references users (user_id) on delete cascade      not null,
-    cold_water_id int references cold_water_list (id) on delete cascade not null
-);
-
-CREATE TABLE hot_water_list
-(
-    id         serial       not null unique,
-    volume     varchar(255) not null,
-    date_full  varchar(255) not null,
-    date_month varchar(255) not null,
-    date_year  varchar(255) not null
-);
-CREATE TABLE users_hot
-(
-    id            serial                                               not null unique,
-    user_id       int references users (user_id) on delete cascade     not null,
-    cold_water_id int references hot_water_list (id) on delete cascade not null
-);
-
-CREATE TABLE gas_list
-(
-    id         serial       not null unique,
-    volume     varchar(255) not null,
-    date_full  varchar(255) not null,
-    date_month varchar(255) not null,
-    date_year  varchar(255) not null
-);
-CREATE TABLE users_gas
-(
-    id            serial                                           not null unique,
-    user_id       int references users (user_id) on delete cascade not null,
-    cold_water_id int references gas_list (id) on delete cascade   not null
+    id            serial       not null unique,
+    user_id       integer      not null,
+    el_volume     varchar(255) default('null'),
+    gas_volume    varchar(255) default('null'),
+    hot_w_volume  varchar(255) default('null'),
+    cold_w_volume varchar(255) default('null'),
+    date_full     varchar(255) not null,
+    date_year     varchar(255) not null,
+    date_month    varchar(255) not null,
+    date_day    varchar(255) not null
 );

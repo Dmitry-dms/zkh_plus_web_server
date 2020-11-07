@@ -9,7 +9,7 @@ import (
 const (
 	usersTable        = "users"
 	usersAddressTable = "address"
-	electricityTable  = "electricity_lists"
+	volumeTable       = "volume_data"
 	companyTable      = "company"
 )
 
