@@ -11,9 +11,9 @@ import (
 )
 
 const (
-	salt      = "HHkdsjggsguy"
-	signinKey = "JKfhndkkj646yNfsjdjfgfhfJKNnfgh"
-	tokenTTL  = 12 * time.Hour
+	salt     = "HHkdsjggsguy"
+	signKey  = "JKfhndkkj646yNfsjdjfgfhfJKNnfgh"
+	tokenTTL = 12 * time.Hour
 )
 
 type AuthService struct {
@@ -52,18 +52,18 @@ func (s *AuthService) GenerateToken(email, password string) (string, error) {
 			ExpiresAt: time.Now().Add(tokenTTL).Unix(), //валидность токена - 12 часов
 			IssuedAt:  time.Now().Unix(),               //время, когда токен был сгенерирован
 		}, user.Id})
-	return token.SignedString([]byte(signinKey))
+	return token.SignedString([]byte(signKey))
 }
 func (s *AuthService) ParseToken(accessToken string) (int, error) {
 	token, err := jwt.ParseWithClaims(accessToken, &tokenClaims{}, func(token *jwt.Token) (interface{}, error) {
 		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
-			return nil, errors.New("Invalid signing method")
+			return nil, errors.New("invalid signing method")
 		}
-		return []byte(signinKey), nil
+		return []byte(signKey), nil
 	})
 
 	if err != nil {
-		return 0, err
+		return 0, errors.New("wrong token")
 	}
 
 	claims, ok := token.Claims.(*tokenClaims)

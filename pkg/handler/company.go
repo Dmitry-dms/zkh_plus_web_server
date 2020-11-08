@@ -1,7 +1,6 @@
 package handler
 
 import (
-	"fmt"
 	"github.com/dmitry-dms/rest-gin/models"
 	"github.com/gin-gonic/gin"
 	"net/http"
@@ -15,11 +14,6 @@ type getAllCompaniesResponse struct {
 func (h *Handler) getAllCompanies(c *gin.Context) {
 
 	companyList, err := h.services.GetAllCompanies()
-	if companyList == nil {
-		fmt.Printf("list = %s", companyList)
-		return
-	}
-
 	if err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return

@@ -26,12 +26,19 @@ func (r *UserRequestsPostgres) UpdateUserCompany(userId, companyId int) error {
 
 func (r *UserRequestsPostgres) CreateUserAddress(userId int, address models.UserAddress) (int, error) {
 	var addressId int
-	query := fmt.Sprintf("INSERT INTO %s (user_id, city, street, home_number, flat) values ($1, $2, $3, $4, $5) RETURNING address_id", usersAddressTable)
-	row := r.db.QueryRow(query, userId, address.City, address.Street, address.HomeNumber, address.Flat)
-	if err := row.Scan(&addressId); err != nil {
-		return 0, err
+	var checkAddress models.UserAddress
+	checkQuery := fmt.Sprintf("SELECT * FROM %s WHERE user_id=$1 AND city=$2 AND street=$3 AND home_number=$4 AND flat=$5 limit 1", usersAddressTable)
+	err := r.db.Get(&checkAddress, checkQuery, userId, address.City, address.Street, address.HomeNumber, address.Flat)
+	if err != nil {
+		query := fmt.Sprintf("INSERT INTO %s (user_id, city, street, home_number, flat) values ($1, $2, $3, $4, $5) RETURNING address_id", usersAddressTable)
+		row := r.db.QueryRow(query, userId, address.City, address.Street, address.HomeNumber, address.Flat)
+		if err := row.Scan(&addressId); err != nil {
+			return 0, err
+		}
+		return addressId, nil
 	}
-	return addressId, nil
+
+	return 0, nil
 }
 
 func (r *UserRequestsPostgres) GetAllUserAddress(userId int) ([]models.UserAddress, error) {
@@ -42,7 +49,7 @@ func (r *UserRequestsPostgres) GetAllUserAddress(userId int) ([]models.UserAddre
 	return lists, err
 }
 
-const null = "null"
+const nullValue = "nullValue"
 
 func (r *UserRequestsPostgres) InputVolumes(userId int, volume models.DataVolume) error {
 
@@ -51,22 +58,22 @@ func (r *UserRequestsPostgres) InputVolumes(userId int, volume models.DataVolume
 	if volume.Electricity != nil {
 		arg1 = fmt.Sprintf("%s", *volume.Electricity)
 	} else {
-		arg1 = fmt.Sprintf("%s", null)
+		arg1 = fmt.Sprintf("%s", nullValue)
 	}
 	if volume.Gas != nil {
 		arg2 = fmt.Sprintf("%s", *volume.Gas)
 	} else {
-		arg2 = fmt.Sprintf("%s", null)
+		arg2 = fmt.Sprintf("%s", nullValue)
 	}
 	if volume.HotWater != nil {
 		arg3 = fmt.Sprintf("%s", *volume.HotWater)
 	} else {
-		arg3 = fmt.Sprintf("%s", null)
+		arg3 = fmt.Sprintf("%s", nullValue)
 	}
 	if volume.ColdWater != nil {
 		arg4 = fmt.Sprintf("%s", *volume.ColdWater)
 	} else {
-		arg4 = fmt.Sprintf("%s", null)
+		arg4 = fmt.Sprintf("%s", nullValue)
 	}
 
 	query := fmt.Sprintf("INSERT INTO %s (user_id,el_volume,gas_volume,hot_w_volume,cold_w_volume,date_full,date_year,date_month,date_day) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9)", volumeTable)

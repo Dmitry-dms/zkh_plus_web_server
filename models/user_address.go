@@ -1,7 +1,7 @@
 package models
 
 type UserAddress struct {
-	Id         int    `json:"-" db:"address_id"`
+	Id         int    `json:"address_id" db:"address_id"`
 	UserId     int    `json:"-" db:"user_id"`
 	City       string `json:"city" binding:"required" db:"city"`
 	Street     string `json:"street" binding:"required" db:"street"`

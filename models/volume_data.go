@@ -1,6 +1,8 @@
 package models
 
-import "errors"
+import (
+	"errors"
+)
 
 type DataVolume struct {
 	Id          int     `json:"-" db:"id"`
