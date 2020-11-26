@@ -21,6 +21,8 @@ CREATE TABLE address
 CREATE TABLE company
 (
     company_id          serial       not null unique,
+    email               varchar(255) not null unique,
+    password_hash       varchar(255) not null,
     company_name        varchar(255) not null unique,
     director_full_name  varchar(255) not null,
     company_phone       varchar(255) not null unique,
@@ -34,12 +36,20 @@ CREATE TABLE volume_data
 (
     id            serial       not null unique,
     user_id       integer      not null,
-    el_volume     varchar(255) default('null'),
-    gas_volume    varchar(255) default('null'),
-    hot_w_volume  varchar(255) default('null'),
-    cold_w_volume varchar(255) default('null'),
+    el_volume     varchar(255) default ('null'),
+    gas_volume    varchar(255) default ('null'),
+    hot_w_volume  varchar(255) default ('null'),
+    cold_w_volume varchar(255) default ('null'),
     date_full     varchar(255) not null,
     date_year     varchar(255) not null,
     date_month    varchar(255) not null,
-    date_day    varchar(255) not null
+    date_day      varchar(255) not null
 );
+CREATE TABLE notifications
+(
+    id          serial      not null unique,
+    company_id  integer     not null,
+    article     varchar     not null,
+    description varchar     not null,
+    date_full   varchar(20) not null
+)

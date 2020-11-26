@@ -9,10 +9,14 @@ type Authorization interface {
 	CreateUser(user models.User) (int, error)                    //вернёт id или ошибку
 	GenerateToken(email string, password string) (string, error) // вернет токен
 	ParseToken(token string) (int, error)                        //вернёт id при успешном парсинге
+	CreateCompany(owner models.Company) (int, error)
+
+	GenerateCompanyOwnerToken(email, password string) (string, error)
 }
 type CompanyList interface {
 	GetAllCompanies() ([]models.Company, error)
 	GetCompanyById(companyId int) (models.Company, error)
+	CreateNotification(companyId int, notification models.Notification) error
 }
 type UserRequest interface {
 	UpdateUserCompany(userId, companyId int) error
@@ -21,6 +25,7 @@ type UserRequest interface {
 	InputVolumes(userId int, volume models.DataVolume) error
 	GetUsersValuesByYearAndMonth(userId, year, month int) ([]models.DataVolume, error)
 	GetAllUserValues(userId int) ([]models.DataVolume, error)
+	GetNotifications(companyId int) ([]models.Notification, error)
 }
 
 type Service struct {

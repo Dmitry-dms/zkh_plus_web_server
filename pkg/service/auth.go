@@ -72,3 +72,23 @@ func (s *AuthService) ParseToken(accessToken string) (int, error) {
 	}
 	return claims.UserId, nil
 }
+
+func (s *AuthService) CreateCompany(owner models.Company) (int, error) {
+	owner.Password = generatePasswordHash(owner.Password)
+	//передаем ещё на слой ниже в репозиторий
+	return s.repo.CreateCompany(owner)
+}
+func (s *AuthService) GenerateCompanyOwnerToken(email, password string) (string, error) {
+	//достаем пользователя из БД
+	user, err := s.repo.GetCompany(email, generatePasswordHash(password))
+	if err != nil {
+		return "", err
+	}
+
+	token := jwt.NewWithClaims(jwt.SigningMethodHS256, &tokenClaims{
+		jwt.StandardClaims{
+			ExpiresAt: time.Now().Add(tokenTTL).Unix(), //валидность токена - 12 часов
+			IssuedAt:  time.Now().Unix(),               //время, когда токен был сгенерирован
+		}, user.Id})
+	return token.SignedString([]byte(signKey))
+}

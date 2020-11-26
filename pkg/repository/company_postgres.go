@@ -1,6 +1,7 @@
 package repository
 
 import (
+	"errors"
 	"fmt"
 	"github.com/dmitry-dms/rest-gin/models"
 	"github.com/jmoiron/sqlx"
@@ -27,4 +28,13 @@ func (r *CompanyListPostgres) GetCompanyById(companyId int) (models.Company, err
 	query := fmt.Sprintf("SELECT * FROM %s WHERE company_id=$1", companyTable)
 	err := r.db.Get(&company, query, companyId)
 	return company, err
+}
+
+func (r *CompanyListPostgres) CreateNotification(companyId int, notification models.Notification) error {
+	query := fmt.Sprintf("INSERT INTO %s (company_id, article, description, date_full) values ($1, $2, $3, $4)", notificationsTable)
+	row := r.db.QueryRow(query, companyId, notification.Article, notification.Description, notification.FullDate)
+	if row == nil {
+		return errors.New("failed to create notification")
+	}
+	return nil
 }

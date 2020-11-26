@@ -18,7 +18,6 @@ func (h *Handler) InitRoutes() *gin.Engine {
 
 	auth := router.Group("/auth")
 	{
-		auth.POST("/sign-up", h.signUp)
 		auth.POST("/sign-in", h.signIn)
 	}
 	test := router.Group("/")
@@ -40,7 +39,22 @@ func (h *Handler) InitRoutes() *gin.Engine {
 			users.POST("/insert-values", h.addVolumes)
 			users.GET("/values/get-all", h.getAllUserValues)
 			users.GET("/values/get", h.getUsersValuesByYearAndMonth) //?year=...&month=...
+			users.GET("/notifications", h.getNotifications)          //?company_id=...
 		}
+	}
+	companyOwner := router.Group("/c-own")
+	{
+		companyOwnerAuth := companyOwner.Group("/auth")
+		{
+			companyOwnerAuth.POST("/sign-up", h.companySignUp)
+			companyOwnerAuth.POST("/sign-in", h.companySignIn)
+		}
+		companyOwnerRequests := companyOwner.Group("/req", h.userIdentity)
+		{
+			companyOwnerRequests.POST("/sign-up", h.signUp) //create user
+			companyOwnerRequests.POST("/create-notification", h.createNotification)
+		}
+
 	}
 	return router
 }

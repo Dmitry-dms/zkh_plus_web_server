@@ -49,3 +49,25 @@ func (h *Handler) getCompanyById(c *gin.Context) {
 	})
 
 }
+
+func (h *Handler) createNotification(c *gin.Context) {
+	var notification models.Notification
+	companyId, err := getUserId(c)
+	if err != nil {
+		return
+	}
+
+	if err := c.BindJSON(&notification); err != nil {
+		newErrorResponse(c, http.StatusBadRequest, err.Error())
+		return
+	}
+	err = h.services.CompanyList.CreateNotification(companyId, notification)
+	if err != nil {
+		newErrorResponse(c, http.StatusInternalServerError, err.Error())
+		return
+	} else {
+		c.JSON(http.StatusOK, &successResponse{
+			Message: "success",
+		})
+	}
+}

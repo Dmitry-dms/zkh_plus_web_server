@@ -1,6 +1,6 @@
 ## We specify the base image we need for our
 ## go application
-FROM golang:1.15-alpine
+FROM golang:1.15.2-alpine
 EXPOSE 8080
 RUN mkdir /app
 ADD . /app

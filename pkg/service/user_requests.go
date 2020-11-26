@@ -47,3 +47,6 @@ func (s *UserRequestService) GetUsersValuesByYearAndMonth(userId, year, month in
 func (s *UserRequestService) GetAllUserValues(userId int) ([]models.DataVolume, error) {
 	return s.repo.GetAllUserValues(userId)
 }
+func (s *UserRequestService) GetNotifications(companyId int) ([]models.Notification, error) {
+	return s.repo.GetNotifications(companyId)
+}

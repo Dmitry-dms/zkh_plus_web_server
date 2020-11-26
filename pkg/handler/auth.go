@@ -48,3 +48,39 @@ func (h *Handler) signIn(c *gin.Context) {
 		"token": token,
 	})
 }
+
+//COMPANY
+func (h *Handler) companySignUp(c *gin.Context) {
+	var input models.Company
+	if err := c.BindJSON(&input); err != nil {
+		newErrorResponse(c, http.StatusBadRequest, err.Error())
+		return
+	}
+
+	id, err := h.services.Authorization.CreateCompany(input)
+	if err != nil {
+		newErrorResponse(c, http.StatusInternalServerError, err.Error())
+		return
+	}
+
+	c.JSON(http.StatusOK, map[string]interface{}{
+		"company_id": id,
+	})
+}
+func (h *Handler) companySignIn(c *gin.Context) {
+	var input signInInput
+	if err := c.BindJSON(&input); err != nil {
+		newErrorResponse(c, http.StatusBadRequest, err.Error())
+		return
+	}
+
+	token, err := h.services.Authorization.GenerateCompanyOwnerToken(input.Email, input.Password)
+	if err != nil {
+		newErrorResponse(c, http.StatusInternalServerError, err.Error())
+		return
+	}
+
+	c.JSON(http.StatusOK, map[string]interface{}{
+		"token": token,
+	})
+}

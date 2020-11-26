@@ -94,3 +94,10 @@ func (r *UserRequestsPostgres) GetAllUserValues(userId int) ([]models.DataVolume
 	err := r.db.Select(&lists, query, userId)
 	return lists, err
 }
+
+func (r *UserRequestsPostgres) GetNotifications(companyId int) ([]models.Notification, error) {
+	var lists []models.Notification
+	query := fmt.Sprintf("SELECT * FROM %s WHERE company_id=$1", notificationsTable)
+	err := r.db.Select(&lists, query, companyId)
+	return lists, err
+}

@@ -2,6 +2,8 @@ package models
 
 type Company struct {
 	Id           int    `json:"company_id" db:"company_id"`
+	Email        string `json:"email" binding:"required" db:"email"`
+	Password     string `json:"password" binding:"required" db:"password_hash"`
 	Name         string `json:"name" binding:"required" db:"company_name"`
 	DirectorName string `json:"director_full_name" binding:"required" db:"director_full_name"`
 	Phone        string `json:"company_phone" binding:"required" db:"company_phone"`

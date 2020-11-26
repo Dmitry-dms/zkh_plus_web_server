@@ -8,10 +8,13 @@ import (
 type Authorization interface {
 	CreateUser(user models.User) (int, error)
 	GetUser(email, password string) (models.User, error)
+	CreateCompany(owner models.Company) (int, error)
+	GetCompany(email, password string) (models.Company, error)
 }
 type CompanyList interface {
 	GetAllCompanies() ([]models.Company, error)
 	GetCompanyById(companyId int) (models.Company, error)
+	CreateNotification(companyId int, notification models.Notification) error
 }
 type UserRequest interface {
 	UpdateUserCompany(userId, companyId int) error
@@ -20,7 +23,9 @@ type UserRequest interface {
 	InputVolumes(userId int, volume models.DataVolume) error
 	GetUsersValuesByYearAndMonth(userId, year, month int) ([]models.DataVolume, error)
 	GetAllUserValues(userId int) ([]models.DataVolume, error)
+	GetNotifications(companyId int) ([]models.Notification, error)
 }
+
 type Repository struct {
 	Authorization
 	CompanyList

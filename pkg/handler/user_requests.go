@@ -152,3 +152,27 @@ func (h *Handler) getAllUserValues(c *gin.Context) {
 		Data: list,
 	})
 }
+
+type notificationsResponse struct {
+	Data []models.Notification `json:"data"`
+}
+
+func (h *Handler) getNotifications(c *gin.Context) {
+	companyId, err := strconv.Atoi(c.DefaultQuery("company_id", "0"))
+	if err != nil {
+		newErrorResponse(c, http.StatusInternalServerError, "company_id is not type of int")
+		return
+	}
+	if companyId == 0 || companyId < 0 {
+		newErrorResponse(c, http.StatusInternalServerError, "company_id must be more than 0")
+		return
+	}
+	notificationList, err := h.services.GetNotifications(companyId)
+	if err != nil {
+		newErrorResponse(c, http.StatusInternalServerError, err.Error())
+		return
+	}
+	c.JSON(http.StatusOK, notificationsResponse{
+		Data: notificationList,
+	})
+}
