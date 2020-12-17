@@ -23,7 +23,12 @@ func (r *UserRequestsPostgres) UpdateUserCompany(userId, companyId int) error {
 	}
 	return nil
 }
-
+func (r *UserRequestsPostgres) GetUserInfo(userId int) (models.User, error) {
+	var user models.User
+	query := fmt.Sprintf("SELECT name,surname,patronymic,company_id FROM %s WHERE user_id=$1", usersTable)
+	err := r.db.Get(&user, query, userId)
+	return user, err
+}
 func (r *UserRequestsPostgres) CreateUserAddress(userId int, address models.UserAddress) (int, error) {
 	var addressId int
 	var checkAddress models.UserAddress
@@ -37,7 +42,6 @@ func (r *UserRequestsPostgres) CreateUserAddress(userId int, address models.User
 		}
 		return addressId, nil
 	}
-
 	return 0, nil
 }
 
@@ -45,7 +49,6 @@ func (r *UserRequestsPostgres) GetAllUserAddress(userId int) ([]models.UserAddre
 	var lists []models.UserAddress
 	query := fmt.Sprintf("SELECT * FROM %s WHERE user_id=$1", usersAddressTable)
 	err := r.db.Select(&lists, query, userId)
-
 	return lists, err
 }
 

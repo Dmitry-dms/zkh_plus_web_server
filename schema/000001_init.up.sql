@@ -1,6 +1,6 @@
 CREATE TABLE users
 (
-    user_id       serial       not null unique,
+    user_id       serial   not null unique,
     surname       varchar(255) not null,
     name          varchar(255) not null,
     patronymic    varchar(255) not null,

@@ -50,3 +50,6 @@ func (s *UserRequestService) GetAllUserValues(userId int) ([]models.DataVolume, 
 func (s *UserRequestService) GetNotifications(companyId int) ([]models.Notification, error) {
 	return s.repo.GetNotifications(companyId)
 }
+func (s *UserRequestService) GetUserInfo(userId int) (models.User, error) {
+	return s.repo.GetUserInfo(userId)
+}

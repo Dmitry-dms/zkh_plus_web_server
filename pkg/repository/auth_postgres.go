@@ -1,6 +1,7 @@
 package repository
 
 import (
+	"errors"
 	"fmt"
 	"github.com/dmitry-dms/rest-gin/models"
 	"github.com/jmoiron/sqlx"
@@ -14,11 +15,11 @@ func NewAuthPostgres(db *sqlx.DB) *AuthPostgres {
 	return &AuthPostgres{db: db}
 }
 
-func (r *AuthPostgres) CreateUser(user models.User) (int, error) {
+func (r *AuthPostgres) CreateUser(user models.User, companyId int) (int, error) {
 	var id int
 	fullName := user.Surname + " " + user.Name + " " + user.Patronymic
-	query := fmt.Sprintf("INSERT INTO %s (name, surname, patronymic, full_name, email, password_hash) values ($1, $2, $3, $4, $5, $6) RETURNING user_id", usersTable)
-	row := r.db.QueryRow(query, user.Name, user.Surname, user.Patronymic, fullName, user.Email, user.Password)
+	query := fmt.Sprintf("INSERT INTO %s (name, surname, patronymic, full_name, email, password_hash, company_id) values ($1, $2, $3, $4, $5, $6, $7) RETURNING user_id", usersTable)
+	row := r.db.QueryRow(query, user.Name, user.Surname, user.Patronymic, fullName, user.Email, user.Password, companyId)
 	if err := row.Scan(&id); err != nil {
 		return 0, err
 	}
@@ -36,7 +37,7 @@ func (r *AuthPostgres) CreateCompany(company models.Company) (int, error) {
 	query := fmt.Sprintf("INSERT INTO %s (email, password_hash, company_name, director_full_name, company_phone, company_city, company_street, company_home_number, company_flat) values ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING company_id", companyTable)
 	row := r.db.QueryRow(query, company.Email, company.Password, company.Name, company.DirectorName, company.Phone, company.City, company.Street, company.HomeNumber, company.Flat)
 	if err := row.Scan(&id); err != nil {
-		return 0, err
+		return 0, errors.New("account with this credentials already exists")
 	}
 	return id, nil
 }

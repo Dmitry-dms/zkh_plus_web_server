@@ -8,12 +8,10 @@ import (
 )
 
 func (h *Handler) updateUserCompany(c *gin.Context) {
-
 	userId, err := getUserId(c)
 	if err != nil {
 		return
 	}
-
 	companyId, err1 := strconv.Atoi(c.DefaultQuery("company_id", "0"))
 	if err1 != nil {
 		newErrorResponse(c, http.StatusInternalServerError, "company_id is not type of int")
@@ -61,21 +59,42 @@ type allUserAddressResponse struct {
 }
 
 func (h *Handler) getAllUserAddress(c *gin.Context) {
-
 	userId, err := getUserId(c)
 	if err != nil {
 		return
 	}
-
 	addressList, err := h.services.GetAllUserAddress(userId)
-
 	if err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return
 	}
-
 	c.JSON(http.StatusOK, allUserAddressResponse{
 		Data: addressList,
+	})
+}
+
+type getUserInfo struct {
+	Name       string `json:"name"`
+	Surname    string `json:"surname"`
+	Patronymic string `json:"patronymic"`
+	CompanyId  int    `json:"company_id"`
+}
+
+func (h *Handler) getUserInfo(c *gin.Context) {
+	userId, err := getUserId(c)
+	if err != nil {
+		return
+	}
+	userInfo, err := h.services.GetUserInfo(userId)
+	if err != nil {
+		newErrorResponse(c, http.StatusInternalServerError, err.Error())
+		return
+	}
+	c.JSON(http.StatusOK, getUserInfo{
+		Name:       userInfo.Name,
+		Surname:    userInfo.Surname,
+		Patronymic: userInfo.Patronymic,
+		CompanyId:  userInfo.CompanyId,
 	})
 }
 func (h *Handler) addVolumes(c *gin.Context) {

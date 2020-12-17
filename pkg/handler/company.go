@@ -58,7 +58,7 @@ func (h *Handler) createNotification(c *gin.Context) {
 	}
 
 	if err := c.BindJSON(&notification); err != nil {
-		newErrorResponse(c, http.StatusBadRequest, err.Error())
+		newErrorResponse(c, http.StatusBadRequest, "input data are not of type notification")
 		return
 	}
 	err = h.services.CompanyList.CreateNotification(companyId, notification)

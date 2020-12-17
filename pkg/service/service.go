@@ -6,7 +6,7 @@ import (
 )
 
 type Authorization interface {
-	CreateUser(user models.User) (int, error)                    //вернёт id или ошибку
+	CreateUser(user models.User, companyId int) (int, error)     //вернёт id или ошибку
 	GenerateToken(email string, password string) (string, error) // вернет токен
 	ParseToken(token string) (int, error)                        //вернёт id при успешном парсинге
 	CreateCompany(owner models.Company) (int, error)
@@ -26,6 +26,7 @@ type UserRequest interface {
 	GetUsersValuesByYearAndMonth(userId, year, month int) ([]models.DataVolume, error)
 	GetAllUserValues(userId int) ([]models.DataVolume, error)
 	GetNotifications(companyId int) ([]models.Notification, error)
+	GetUserInfo(userId int) (models.User, error)
 }
 
 type Service struct {

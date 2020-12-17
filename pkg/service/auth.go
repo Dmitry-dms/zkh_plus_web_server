@@ -28,10 +28,10 @@ func NewAuthService(repo repository.Authorization) *AuthService {
 	return &AuthService{repo: repo}
 }
 
-func (s *AuthService) CreateUser(user models.User) (int, error) {
+func (s *AuthService) CreateUser(user models.User, companyId int) (int, error) {
 	user.Password = generatePasswordHash(user.Password)
 	//передаем ещё на слой ниже в репозиторий
-	return s.repo.CreateUser(user)
+	return s.repo.CreateUser(user, companyId)
 }
 
 func generatePasswordHash(password string) string {

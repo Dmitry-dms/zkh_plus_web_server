@@ -12,9 +12,13 @@ func (h *Handler) signUp(c *gin.Context) {
 		newErrorResponse(c, http.StatusBadRequest, err.Error()) //400 - неверные данные в запросе
 		return
 	}
+	companyId, err := getUserId(c)
+	if err != nil {
+		return
+	}
 	//далее передаём данные в сервис,(слой ниже) где реализована бизнес логика регистрации
 
-	id, err := h.services.Authorization.CreateUser(input)
+	id, err := h.services.Authorization.CreateUser(input, companyId)
 	if err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, err.Error()) // 500 - внутренняя ошибка на сервере
 		return

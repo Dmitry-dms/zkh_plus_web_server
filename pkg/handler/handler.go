@@ -33,7 +33,8 @@ func (h *Handler) InitRoutes() *gin.Engine {
 		}
 		users := api.Group("/users")
 		{
-			users.POST("/update-company", h.updateUserCompany) // ?company_id=...
+			users.GET("/get-user-info", h.getUserInfo)
+			//users.POST("/update-company", h.updateUserCompany) // ?company_id=...
 			users.POST("/create-address", h.createUserAddress)
 			users.GET("/get-user-address", h.getAllUserAddress)
 			users.POST("/insert-values", h.addVolumes)
