@@ -20,7 +20,7 @@ type UserRequest interface {
 	UpdateUserCompany(userId, companyId int) error
 	CreateUserAddress(userId int, address models.UserAddress) (int, error)
 	GetAllUserAddress(userId int) ([]models.UserAddress, error)
-	InputVolumes(userId int, volume models.DataVolume) (float32, error)
+	InputVolumes(userId int, volume models.DataVolume) (models.VolumeResponse, error)
 	GetUsersValuesByYearAndMonth(userId, year, month int) ([]models.DataVolume, error)
 	GetAllUserValues(userId int) ([]models.DataVolume, error)
 	GetNotifications(companyId int) ([]models.Notification, error)

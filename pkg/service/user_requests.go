@@ -27,7 +27,7 @@ func (s *UserRequestService) CreateUserAddress(userId int, address models.UserAd
 func (s *UserRequestService) GetAllUserAddress(userId int) ([]models.UserAddress, error) {
 	return s.repo.GetAllUserAddress(userId)
 }
-func (s *UserRequestService) InputVolumes(userId int, volume models.DataVolume) (float32, error) {
+func (s *UserRequestService) InputVolumes(userId int, volume models.DataVolume) (models.VolumeResponse, error) {
 
 	t := time.Now()
 	fullDate := fmt.Sprintf(t.Format("2006-01-02"))

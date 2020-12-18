@@ -62,15 +62,17 @@ const (
 	gas         = 5.03
 )
 
-func (r *UserRequestsPostgres) InputVolumes(userId int, volume models.DataVolume) (float32, error) {
+func (r *UserRequestsPostgres) InputVolumes(userId int, volume models.DataVolume) (models.VolumeResponse, error) {
 
 	var arg1, arg2, arg3, arg4, arg5 string
+	resp := new(models.VolumeResponse)
 	var money float32
 
 	if volume.Electricity != nil {
 		arg1 = fmt.Sprintf("%s", *volume.Electricity)
 		value, _ := strconv.ParseFloat(arg1, 32)
 		pay := float32(value)
+		resp.Electricity = electricity * pay
 		money += electricity * pay
 	} else {
 		arg1 = fmt.Sprintf("%s", nullValue)
@@ -79,6 +81,7 @@ func (r *UserRequestsPostgres) InputVolumes(userId int, volume models.DataVolume
 		arg2 = fmt.Sprintf("%s", *volume.Gas)
 		value, _ := strconv.ParseFloat(arg2, 32)
 		pay := float32(value)
+		resp.Gas = gas * pay
 		money += gas * pay
 	} else {
 		arg2 = fmt.Sprintf("%s", nullValue)
@@ -87,6 +90,7 @@ func (r *UserRequestsPostgres) InputVolumes(userId int, volume models.DataVolume
 		arg3 = fmt.Sprintf("%s", *volume.HotWater)
 		value, _ := strconv.ParseFloat(arg3, 32)
 		pay := float32(value)
+		resp.HotWater = hotW * pay
 		money += hotW * pay
 	} else {
 		arg3 = fmt.Sprintf("%s", nullValue)
@@ -95,6 +99,7 @@ func (r *UserRequestsPostgres) InputVolumes(userId int, volume models.DataVolume
 		arg4 = fmt.Sprintf("%s", *volume.ColdWater)
 		value, _ := strconv.ParseFloat(arg4, 32)
 		pay := float32(value)
+		resp.ColdWater = coldW * pay
 		money += coldW * pay
 	} else {
 		arg4 = fmt.Sprintf("%s", nullValue)
@@ -103,15 +108,17 @@ func (r *UserRequestsPostgres) InputVolumes(userId int, volume models.DataVolume
 		arg5 = fmt.Sprintf("%s", *volume.Warming)
 		value, _ := strconv.ParseFloat(arg5, 32)
 		pay := float32(value)
+		resp.Warming = warming * pay
 		money += warming * pay
 	} else {
 		arg5 = fmt.Sprintf("%s", nullValue)
 	}
+	resp.Summ = money
 
 	query := fmt.Sprintf("INSERT INTO %s (user_id,el_volume,gas_volume,hot_w_volume,cold_w_volume,warming_volume,date_full,date_year,date_month,date_day) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10)", volumeTable)
 
 	_, err := r.db.Query(query, userId, arg1, arg2, arg3, arg4, arg5, volume.FullDate, volume.Year, volume.Month, volume.Day)
-	return money, err
+	return *resp, err
 }
 
 func (r *UserRequestsPostgres) GetUsersValuesByYearAndMonth(userId, year, month int) ([]models.DataVolume, error) {
