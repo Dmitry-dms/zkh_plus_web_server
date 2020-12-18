@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"fmt"
 	"github.com/dmitry-dms/rest-gin/models"
 	"github.com/gin-gonic/gin"
 	"net/http"
@@ -107,13 +108,17 @@ func (h *Handler) addVolumes(c *gin.Context) {
 		newErrorResponse(c, http.StatusBadRequest, err.Error()) //400 - неверные данные в запросе
 		return
 	}
-	err = h.services.InputVolumes(userId, volume)
+	if err := volume.Validate(); err != nil {
+		newErrorResponse(c, http.StatusBadRequest, err.Error())
+		return
+	}
+	money, err := h.services.InputVolumes(userId, volume)
 	if err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, err.Error()) //400 - неверные данные в запросе
 		return
 	}
 	c.JSON(http.StatusOK, &successResponse{
-		Message: "success",
+		Message: fmt.Sprintf("%.2f", money),
 	})
 }
 

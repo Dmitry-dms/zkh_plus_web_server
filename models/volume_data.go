@@ -11,6 +11,7 @@ type DataVolume struct {
 	Gas         *string `json:"gas"  db:"gas_volume"`
 	HotWater    *string `json:"hot_water"  db:"hot_w_volume"`
 	ColdWater   *string `json:"cold_water" db:"cold_w_volume"`
+	Warming     *string `json:"warming" db:"warming_volume"`
 	FullDate    string  `json:"date_full" db:"date_full"`
 	Year        string  `json:"date_year" db:"date_year"`
 	Month       string  `json:"date_month" db:"date_month"`
@@ -18,7 +19,7 @@ type DataVolume struct {
 }
 
 func (d DataVolume) Validate() error {
-	if d.Electricity == nil && d.Gas == nil && d.HotWater == nil && d.ColdWater == nil {
+	if d.Electricity == nil && d.Gas == nil && d.HotWater == nil && d.ColdWater == nil && d.Warming == nil {
 		return errors.New("insert values has no values")
 	}
 	return nil

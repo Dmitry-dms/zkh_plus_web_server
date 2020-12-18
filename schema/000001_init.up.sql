@@ -40,6 +40,7 @@ CREATE TABLE volume_data
     gas_volume    varchar(255) default ('null'),
     hot_w_volume  varchar(255) default ('null'),
     cold_w_volume varchar(255) default ('null'),
+    warming_volume varchar(255) default ('null'),
     date_full     varchar(255) not null,
     date_year     varchar(255) not null,
     date_month    varchar(255) not null,
