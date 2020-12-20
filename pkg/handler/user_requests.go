@@ -118,6 +118,20 @@ func (h *Handler) addVolumes(c *gin.Context) {
 	}
 	c.JSON(http.StatusOK, &money)
 }
+func (h *Handler) getUsersLastValue(c *gin.Context) {
+	userId, err := getUserId(c)
+	if err != nil {
+		return
+	}
+	list, err := h.services.GetUsersLastVolume(userId)
+	if err != nil {
+		newErrorResponse(c, http.StatusInternalServerError, err.Error())
+		return
+	}
+	c.JSON(http.StatusOK, userValuesResponse{
+		Data: list,
+	})
+}
 
 type userValuesResponse struct {
 	Data []models.DataVolume `json:"data"`

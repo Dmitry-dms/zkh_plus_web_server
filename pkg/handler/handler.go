@@ -38,6 +38,7 @@ func (h *Handler) InitRoutes() *gin.Engine {
 			users.POST("/create-address", h.createUserAddress)
 			users.GET("/get-user-address", h.getAllUserAddress)
 			users.POST("/insert-values", h.addVolumes)
+			users.GET("/values/get-last", h.getUsersLastValue)
 			users.GET("/values/get-all", h.getAllUserValues)
 			users.GET("/values/get", h.getUsersValuesByYearAndMonth) //?year=...&month=...
 			users.GET("/notifications", h.getNotifications)          //?company_id=...

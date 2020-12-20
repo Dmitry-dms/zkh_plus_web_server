@@ -27,6 +27,7 @@ type UserRequest interface {
 	GetAllUserValues(userId int) ([]models.DataVolume, error)
 	GetNotifications(companyId int) ([]models.Notification, error)
 	GetUserInfo(userId int) (models.User, error)
+	GetUsersLastVolume(userId int) ([]models.DataVolume, error)
 }
 
 type Service struct {

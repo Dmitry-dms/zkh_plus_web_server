@@ -51,3 +51,6 @@ func (s *UserRequestService) GetNotifications(companyId int) ([]models.Notificat
 func (s *UserRequestService) GetUserInfo(userId int) (models.User, error) {
 	return s.repo.GetUserInfo(userId)
 }
+func (s *UserRequestService) GetUsersLastVolume(userId int) ([]models.DataVolume, error) {
+	return s.repo.GetUsersLastVolume(userId)
+}
