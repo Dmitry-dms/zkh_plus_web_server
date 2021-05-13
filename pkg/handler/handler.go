@@ -1,7 +1,7 @@
 package handler
 
 import (
-	"github.com/dmitry-dms/rest-gin/pkg/service"
+	"github.com/Dmitry-dms/zkh-plus/pkg/service"
 	"github.com/gin-gonic/gin"
 )
 
@@ -29,20 +29,20 @@ func (h *Handler) InitRoutes() *gin.Engine {
 		company := api.Group("/companies")
 		{
 			company.GET("/get-all", h.getAllCompanies)
-			company.GET("/get", h.getCompanyById) // ?company_id=...
+			//company.GET("/get", h.getCompanyById) // ?company_id=...
 		}
-		users := api.Group("/users")
-		{
-			users.GET("/get-user-info", h.getUserInfo)
-			//users.POST("/update-company", h.updateUserCompany) // ?company_id=...
-			users.POST("/create-address", h.createUserAddress)
-			users.GET("/get-user-address", h.getAllUserAddress)
-			users.POST("/insert-values", h.addVolumes)
-			users.GET("/values/get-last", h.getUsersLastValue)
-			users.GET("/values/get-all", h.getAllUserValues)
-			users.GET("/values/get", h.getUsersValuesByYearAndMonth) //?year=...&month=...
-			users.GET("/notifications", h.getNotifications)          //?company_id=...
-		}
+		 users := api.Group("/users")
+		 {
+		 	users.GET("/get-user-info", h.getUserInfo)
+		// 	//users.POST("/update-company", h.updateUserCompany) // ?company_id=...
+		// 	users.POST("/create-address", h.createUserAddress)
+		// 	users.GET("/get-user-address", h.getAllUserAddress)
+		// 	users.POST("/insert-values", h.addVolumes)
+		// 	users.GET("/values/get-last", h.getUsersLastValue)
+		// 	users.GET("/values/get-all", h.getAllUserValues)
+		// 	users.GET("/values/get", h.getUsersValuesByYearAndMonth) //?year=...&month=...
+		// 	users.GET("/notifications", h.getNotifications)          //?company_id=...
+		 }
 	}
 	companyOwner := router.Group("/c-own")
 	{
@@ -54,7 +54,7 @@ func (h *Handler) InitRoutes() *gin.Engine {
 		companyOwnerRequests := companyOwner.Group("/req", h.userIdentity)
 		{
 			companyOwnerRequests.POST("/sign-up", h.signUp) //create user
-			companyOwnerRequests.POST("/create-notification", h.createNotification)
+			//companyOwnerRequests.POST("/create-notification", h.createNotification)
 		}
 
 	}

@@ -1,7 +1,7 @@
 package handler
 
 import (
-	"github.com/dmitry-dms/rest-gin/models"
+	"github.com/Dmitry-dms/zkh-plus/models"
 	"github.com/gin-gonic/gin"
 	"net/http"
 )

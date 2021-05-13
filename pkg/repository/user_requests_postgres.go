@@ -3,7 +3,7 @@ package repository
 import (
 	"errors"
 	"fmt"
-	"github.com/dmitry-dms/rest-gin/models"
+	"github.com/Dmitry-dms/zkh-plus/models"
 	"github.com/jmoiron/sqlx"
 	"strconv"
 )

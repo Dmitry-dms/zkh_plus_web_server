@@ -2,8 +2,8 @@ package service
 
 import (
 	"fmt"
-	"github.com/dmitry-dms/rest-gin/models"
-	"github.com/dmitry-dms/rest-gin/pkg/repository"
+	"github.com/Dmitry-dms/zkh-plus/models"
+	"github.com/Dmitry-dms/zkh-plus/pkg/repository"
 	"time"
 )
 

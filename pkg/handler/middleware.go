@@ -2,9 +2,11 @@ package handler
 
 import (
 	"errors"
-	"github.com/gin-gonic/gin"
 	"net/http"
 	"strings"
+
+	"github.com/gin-gonic/gin"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
 const (
@@ -76,16 +78,16 @@ func (h *Handler) checkToken(c *gin.Context) {
 	}
 }
 
-func getUserId(c *gin.Context) (int, error) {
+func getUserId(c *gin.Context) (primitive.ObjectID, error) {
 	id, ok := c.Get(userCtx)
 	if !ok {
 		newErrorResponse(c, http.StatusInternalServerError, "user_id not found")
-		return 0, errors.New("user_id not found")
+		return primitive.NilObjectID, errors.New("user_id not found")
 	}
-	idInt, ok := id.(int)
+	idInt, ok := id.(primitive.ObjectID)
 	if !ok {
 		newErrorResponse(c, http.StatusInternalServerError, "invalid type of user_id")
-		return 0, errors.New("invalid type of user_id")
+		return primitive.NilObjectID, errors.New("invalid type of user_id")
 	}
 	return idInt, nil
 }
